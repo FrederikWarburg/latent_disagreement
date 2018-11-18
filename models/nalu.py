@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.nn.init as init
 import torch.nn.functional as F
 
+import numpy as np
 from .nac import NeuralAccumulatorCell
 from torch.nn.parameter import Parameter
 
@@ -23,7 +24,7 @@ class NeuralArithmeticLogicUnitCell(nn.Module):
         self.in_dim = in_dim
         self.out_dim = out_dim
         self.eps = 1e-10
-
+        self.g = np.zeros(in_dim)
         self.G = Parameter(torch.Tensor(out_dim, in_dim))
         self.nac = NeuralAccumulatorCell(in_dim, out_dim)
         self.register_parameter('bias', None)
@@ -32,11 +33,11 @@ class NeuralArithmeticLogicUnitCell(nn.Module):
 
     def forward(self, input):
         a = self.nac(input)
-        g = torch.sigmoid(F.linear(input, self.G, self.bias))
-        add_sub = g * a
+        self.g = torch.sigmoid(F.linear(input, self.G, self.bias))
+        add_sub = self.g * a
         log_input = torch.log(torch.abs(input) + self.eps)
         m = torch.exp(self.nac(log_input))
-        mul_div = (1 - g) * m
+        mul_div = (1 - self.g) * m
         y = add_sub + mul_div
         return y
 
