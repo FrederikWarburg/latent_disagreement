@@ -4,10 +4,9 @@ import torch.nn as nn
 import torch.nn.init as init
 import torch.nn.functional as F
 
-import numpy as np
 from .nac import NeuralAccumulatorCell
 from torch.nn.parameter import Parameter
-
+import numpy as np
 
 class NeuralArithmeticLogicUnitCell(nn.Module):
     """A Neural Arithmetic Logic Unit (NALU) cell [1].
@@ -24,7 +23,7 @@ class NeuralArithmeticLogicUnitCell(nn.Module):
         self.in_dim = in_dim
         self.out_dim = out_dim
         self.eps = 1e-10
-        self.g = np.zeros(in_dim)
+
         self.G = Parameter(torch.Tensor(out_dim, in_dim))
         self.nac = NeuralAccumulatorCell(in_dim, out_dim)
         self.register_parameter('bias', None)
@@ -33,11 +32,12 @@ class NeuralArithmeticLogicUnitCell(nn.Module):
 
     def forward(self, input):
         a = self.nac(input)
-        self.g = torch.sigmoid(F.linear(input, self.G, self.bias))
-        add_sub = self.g * a
+        g = torch.sigmoid(F.linear(input, self.G, self.bias))
+        self.g_store = g
+        add_sub = g * a
         log_input = torch.log(torch.abs(input) + self.eps)
         m = torch.exp(self.nac(log_input))
-        mul_div = (1 - self.g) * m
+        mul_div = (1 - g) * m
         y = add_sub + mul_div
         return y
 
