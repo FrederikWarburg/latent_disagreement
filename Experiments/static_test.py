@@ -107,8 +107,6 @@ def generate_synthetic_arithmetic_dataset(arithmetic_op, min_value, max_value, s
 
 
 
-
-
 interpolations = [True, False]
 for interpolation in interpolations:
     
@@ -120,13 +118,15 @@ for interpolation in interpolations:
         test_range = [0,100]
     
     operators = ['add', 'sub', 'mult','div','square','root']
-    for operator in operators:
+    for i in range(len(operators)-1):
+        
+        operator = operators[i]
         
         first_losses = []
         last_losses = []
         
-        for i in range(1):
-            stop_training = False
+        for i in range(10):
+                        
             np.random.seed(i)
 
             in_dim = FEATURES_NUM
@@ -143,11 +143,11 @@ for interpolation in interpolations:
             print(boundaries)
             optimizer = torch.optim.RMSprop(model.parameters(),lr=lr)
 
-            experiment = "int_"+str(interpolation)+",op_" + operator + ",lr_" + str(lr) + ",bs_" + str(batch_size) + ",f_" + str(FEATURES_NUM) +",tr_r_" + str(training_range) + ",te_r_" +str(test_range)
+            experiment = "int_"+str(interpolation)+",op_" + operator +",to" + operators[i+1] + ",lr_" + str(lr) + ",bs_" + str(batch_size) + ",f_" + str(FEATURES_NUM) +",tr_r_" + str(training_range) + ",te_r_" +str(test_range)
             exp = "exp=" + str(i) + "/"
             Nalues = [exp + 'SelectorNALU/', exp + 'operatorNalu/']
 
-            path = 'checkpoints/' + experiment + '/'
+            path = 'checkpoints_change_of_operators/' + experiment + '/'
             if not os.path.exists('checkpoints'):
                 os.mkdir('checkpoints')
             if not os.path.exists('checkpoints/' + experiment):
@@ -164,7 +164,10 @@ for interpolation in interpolations:
             first_losses.append(loss.item())
 
             for epoch in tqdm(range(epochs)):
-
+                
+                if epoch > 500:
+                    operator = operators[(i+1)]
+                
                 for batch in range(len(X_train) // batch_size):
 
                     model.train()
@@ -244,4 +247,5 @@ for interpolation in interpolations:
             writer.add_text(exp + "data/first_losses_mean", str(np.mean(first_losses)), 0)
             writer.add_text(exp + "data/last_losses", str(last_losses), 0)
             writer.add_text(exp + "data/last_losses_mean", str(np.mean(last_losses)), 0)
+    
     
