@@ -12,11 +12,12 @@ Neural networks have proven advantageous in a wide variety of fields; including 
 
 Subset selection and arithemtic operation task
 
-![alt text](https://github.com/FrederikWarburg/latent_disagreement/blob/master/Images/FullTask.png)
+<img src="https://github.com/FrederikWarburg/latent_disagreement/blob/master/Images/FullTask.png" width="450">
 
 Only subset selection task
 
-![alt text](https://github.com/FrederikWarburg/latent_disagreement/blob/master/Images/SubsetTask.png)
+<img src="https://github.com/FrederikWarburg/latent_disagreement/blob/master/Images/SubsetTask.png" width="450">
+
 
 Propagation of weights. Here an example of convergence.
 
