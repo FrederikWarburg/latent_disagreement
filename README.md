@@ -10,3 +10,23 @@ Neural networks have proven advantageous in a wide variety of fields; including 
 
 **General results**
 
+Subset selection and arithemtic operation task
+
+![alt text](https://github.com/FrederikWarburg/latent_disagreement/blob/master/Images/FullTask.png)
+
+Only subset selection task
+
+![alt text](https://github.com/FrederikWarburg/latent_disagreement/blob/master/Images/SubsetTask.png)
+
+Propagation of weights. Here an example of convergence.
+
+<img src="https://github.com/FrederikWarburg/latent_disagreement/blob/master/Images/kai_uni_conv.png" width="250">
+
+In most cases however, the models had trouble learning the underlying structure, resulting in a poor generalization.
+
+<img src="https://github.com/FrederikWarburg/latent_disagreement/blob/master/Images/kai_uni_div.png" width="250">
+
+These results were most likely due to the fact that the gating function was hard to learn, meaning that the network "choose" the wrong gate and ended up multiplying instead of adding.
+
+<img src="https://github.com/FrederikWarburg/latent_disagreement/blob/master/Images/kai_uni_div_g.png" width="250">
+
