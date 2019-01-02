@@ -2,7 +2,7 @@
 
 Contain the files, implementations and experiments conducted by the group Latent Disagreement during the 02456 Deep Learning course Fall 2018.
 
-The NALU and NAC framework can be found within the "models" folder, whereas all the experiments are gathering in the "experiments" folder. 
+The NALU and NAC framework can be found within the "models" folder, whereas all the experiments are gathered in the "experiments" folder. The "main_results" folder contains a script including the main findings during the project.
 
 **Abstract**
 
